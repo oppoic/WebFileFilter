@@ -1,2 +1,2 @@
 # LogFilter
-Fast sort your Logs
+Fast sort your Logs.
