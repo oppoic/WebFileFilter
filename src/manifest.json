@@ -4,7 +4,6 @@
   "description": "Fast sort your Logs",
   "icons": {
     "16": "images/icon_16px.png",
-    "32": "images/icon_32px.png",
     "48": "images/icon_48px.png",
     "128": "images/icon_128px.png"
   },
