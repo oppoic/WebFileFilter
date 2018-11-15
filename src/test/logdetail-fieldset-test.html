@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="../images/icon_16px.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>detail-fieldset-test</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        fieldset {
+            padding: .35em .625em .75em;
+            margin: 0 2px;
+            border: 1px solid silver
+        }
+
+        legend {
+            padding: .5em;
+            border: 0;
+            width: auto;
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div id="nav" class="col-sm-4 col-md-6 col-lg-6" style="overflow-y: scroll;">
+                <ul class="nav nav-pills nav-stacked">
+                </ul>
+            </div>
+            <div id="detail" class="col-sm-8 col-md-6 col-lg-6" style="overflow-y: scroll;">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <fieldset>
+                                <legend>格式化JSON</legend>
+                                <div id="jsonFormat"></div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <fieldset>
+                                <legend>原始字符串</legend>
+                                <div id="jsonOrigin"></div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/jquery.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="jquery.json.detail-test.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var logArr = ['{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Debug","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', 'abcdefg', '{"Project":"","LogStore":"scoreimportconsole","Topic":"","Time":"2018-11-01 14:00:57","RequestID":0,"Method":"post","Document":{"jobkey":"scoreimport_createexam_c03bec42-2d7f-4abe-a487-69d417d00882","guid":"c03bec42-2d7f-4abe-a487-69d417d00882","ru":"3408076","createdUser":"18297782605"},"Form":{},"Query":{},"Header":{"content-type":"application/octet-stream","accept":"*/*","host":"localhost:8085","content-length":"185","stream-type":"UDP-Stream","udp-request":"0"},"Level":"Error","Source":"","Log":"System.Exception: MyOA.URIResource.URIResourcePipeline EXECUTE scoreimportconsole/worklist_bk/examinesuccess THROW EXCEPTION post:scoreimportconsole/worklist_bk/examinesuccess --> System.Exception: http://172.30.5.42:7021/officeserver/Exam StatusCode : GatewayTimeout at MyOA.URIResource.UD.<apphttp>d__41.MoveNext()--- End of stack trace from previous location where exception was thrown --- at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw() at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task) at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult() at MyOA.URIResource.UD.<P>d__35.MoveNext()--- End of stack trace from previous location where exception was thrown --- at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw() at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task) at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult() at scoreimportcommon.RpcResource.<RpcCommon>d__4.MoveNext() in /septnet-dev/.jenkins/workspace/scoreimport/scoreimportcommon/rpc/RpcResource.cs:line 151--- End of stack trace from previous location where exception was thrown --- at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw() at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task) at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult() at scoreimportconsole.examapi.<add>d__1.MoveNext() in /septnet-dev/.jenkins/workspace/scoreimport/scoreimportconsole/officeapi/examapi.cs:line 79--- End of stack trace from previous location where exception was thrown --- at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw() at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task) at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult() at scoreimportconsole.worklist_bk.<examinesuccess>d__8.MoveNext() in /septnet-dev/.jenkins/workspace/scoreimport/scoreimportconsole/controller_bk/worklist_bk.cs:line 318--- End of stack trace from previous location where exception was thrown --- at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw() at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task) at MyOA.URIResource.UD.<appcode_invoke>d__40.MoveNext() at MyOA.URIResource.URIResourcePipeline.<.ctor>b__3_0(String s, URIResourcePacket p) at MyOA.URIResource.URIResourcePipeline.<>c__DisplayClass6_0.<Execute>b__1(UD e) at MyOA.URIResource.UD.<P>d__36.MoveNext()--- End of stack trace from previous location where exception was thrown --- at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw() at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task) at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult() at MyOA.URIResource.UD.<PAsync>d__37.MoveNext()--- End of stack trace from previous location where exception was thrown --- at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw() at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task) at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult() at MyOA.URIResource.URIResourcePipeline.<Execute>d__6.MoveNext()--- End of stack trace from previous location where exception was thrown --- at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw() at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task) at MyOA.URIResource.HTTPStartup.<<Configure>b__0_0>d.MoveNext()"}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:14:35","Level":"Warn","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Error","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Fatal","Source":"File/QuesTitleRelateDataGet111111111111","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Debug","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:14:35","Level":"Info","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:14:35","Level":"Warn","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Error","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Fatal","Source":"File/QuesTitleRelateDataGet111111111111","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Debug","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:14:35","Level":"Info","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:14:35","Level":"Warn","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Error","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Fatal","Source":"File/QuesTitleRelateDataGet111111111111","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Debug","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:14:35","Level":"Info","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:14:35","Level":"Warn","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Error","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Fatal","Source":"File/QuesTitleRelateDataGet111111111111","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Debug","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:14:35","Level":"Info","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:14:35","Level":"Warn","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Error","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Fatal","Source":"File/QuesTitleRelateDataGet111111111111","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Debug","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:14:35","Level":"Info","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:14:35","Level":"Warn","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Error","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Fatal","Source":"File/QuesTitleRelateDataGet111111111111","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Debug","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:14:35","Level":"Info","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:14:35","Level":"Warn","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Error","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Fatal","Source":"File/QuesTitleRelateDataGet111111111111","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Debug","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:14:35","Level":"Info","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:14:35","Level":"Warn","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Error","Source":"File/QuesTitleRelateDataGet","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}', '{"Project":"","LogStore":"scoreimportapibk","Topic":"HttpGlobalExceptionFilter","Time":"2018-09-21 16:06:44","Level":"Fatal","Source":"File/QuesTitleRelateDataGet111111111111","Log":"[get]?fileGuid=d2b6d9ab-223d-40f0-9cbf-3de27aaf6e4a&rowIndex=3&columnStart=1&columnEnd=1 ::1 A task was canceled."}'];
+
+        var wHeight = $(window).height();
+        $("#nav").height(wHeight);
+        $("#detail").height(wHeight);
+
+        var level = '', time = '', logStore = '', source = '';
+        $.each(logArr, function (i, v) {
+            if (v == undefined || v == "") {
+                return true;
+            }
+            level = '-'; time = '-'; logStore = '-'; source = '-';
+            //console.log(v);
+
+            try {
+                var obj = JSON.parse(v);
+                if (obj.Level != undefined) {
+                    level = obj.Level
+                }
+                if (obj.Time != undefined) {
+                    time = obj.Time
+                }
+                if (obj.LogStore != undefined) {
+                    logStore = obj.LogStore
+                }
+                if (obj.Source != undefined) {
+                    source = obj.Source
+                }
+                $("#nav ul").append("<li><a href='javascript:;'>" + showLevel(level) + "&nbsp;&nbsp;<strong>" + time + "</strong>&nbsp;&nbsp;[Project]&nbsp;" + logStore + "&nbsp;&nbsp;[Source]&nbsp;" + source + "</a><input type='hidden' value='" + escape(v) + "'></li>");
+            }
+            catch (ex) {
+                $("#nav ul").append("<li><a href='javascript:;'>" + showLevel('格式错误') + "&nbsp;&nbsp;本条格式错误，请点击查看原始字符串</a><input type='hidden' value='" + escape(v) + "'></li>");
+            }
+        });
+
+        $("body").on("click", "#nav ul li", function () {
+            $(this).addClass("active").siblings().removeClass("active");
+            var jsonOriginStr = unescape($(this).find("input:hidden").val());
+            $("#jsonOrigin").html(jsonOriginStr);
+
+            try {
+                var jsonFormatStr = new JSONFormat($.trim(jsonOriginStr), 4).toString();
+                $("#jsonFormat").html(jsonFormatStr);
+            }
+            catch (ex) {
+                console.log(jsonOriginStr);
+                $("#jsonFormat").html('<h4>格式化失败，请查看下方原始字符串</h4>');
+            }
+        });
+
+        function showLevel(level) {
+            var levelFormat = '';
+            switch (level.toLowerCase()) {
+                case "debug":
+                    levelFormat = '<span class="label label-primary">' + level + '</span>';
+                    break;
+                case "info":
+                    levelFormat = '<span class="label label-default">&nbsp;&nbsp;' + level + '&nbsp;&nbsp;</span>';
+                    break;
+                case "warn":
+                    levelFormat = '<span class="label label-info">&nbsp;' + level + '&nbsp;</span>';
+                    break;
+                case "error":
+                    levelFormat = '<span class="label label-warning">&nbsp;' + level + '&nbsp;</span>';
+                    break;
+                case "fatal":
+                    levelFormat = '<span class="label label-danger">&nbsp;' + level + '&nbsp;</span>';
+                    break;
+                default:
+                    levelFormat = '<span class="label label-danger">' + level + '</span>';
+                    break;
+            }
+            return levelFormat;
+        }
+    </script>
+</body>
+
+</html>

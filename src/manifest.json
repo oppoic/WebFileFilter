@@ -1,0 +1,58 @@
+{
+  "name": "LogFilter",
+  "version": "1.0.0",
+  "description": "Fast sort your Logs",
+  "icons": {
+    "16": "images/icon_16px.png",
+    "32": "images/icon_32px.png",
+    "48": "images/icon_48px.png",
+    "128": "images/icon_128px.png"
+  },
+  "options_ui": {
+    "page": "settings.html",
+    "chrome_style": true
+  },
+  "browser_action": {
+    "default_icon": "images/icon_16px.png",
+    "default_title": "LogFilter"
+  },
+  "web_accessible_resources": [
+    "images/icon_16px.png"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://115.28.115.220:5000/log/",
+        "http://115.28.113.150:55000/log/"
+      ],
+      "css": [
+        "css/bootstrap.min.css"
+      ],
+      "js": [
+        "js/jquery.min.js",
+        "js/bootstrap.min.js",
+        "js/jslinq.js",
+        "js/content_scripts_list.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "http://115.28.115.220:5000/log/*.*",
+        "http://115.28.113.150:55000/log/*.*"
+      ],
+      "css": [
+        "css/bootstrap.min.css",
+        "css/mycss.css"
+      ],
+      "js": [
+        "js/jquery.min.js",
+        "js/bootstrap.min.js",
+        "js/jquery.json.js",
+        "js/content_scripts_detail.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "manifest_version": 2
+}
