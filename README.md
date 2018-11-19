@@ -1,16 +1,17 @@
 # 项目说明
-LogFilter是一个谷歌插件（Chrome Plugin），安装后可以美化web服务器输出的 **文件列表** 和 **文件详情** 页面。
+LogFilter是一款谷歌插件（Chrome Plugin），安装后可以美化web服务器输出的**文件列表**和**文件详情**页面。
 
 # 效果演示
 ## 默认文件列表
 ![默认文件列表](https://github.com/oppoic/LogFilter/blob/master/pic/list-origin.png?raw=true)
-这是一个日志列表页面，不同项目的日志参杂在一起，找起来比较费劲。这里可以通过`content_scripts`向这个页面注入`js`、`css`，实现对不同项目的日志进行分类、排序和美化展示。来看看处理后的效果
+这是日志列表页面，不同项目的日志参杂在一起，找起来比较费劲。这里可以通过`content_scripts`向这个页面注入`js`、`css`，实现对不同项目的日志进行分类、排序和美化展示。来看看处理后的效果
 ## 美化文件列表
 ![美化文件列表](https://github.com/oppoic/LogFilter/blob/master/pic/list-format.png?raw=true)
 使用`content_scripts`向页面注入`js`、`css`而不使用`background`的方式，是因为`content_scripts`的方式只注入到已经配置的页面，其他任何页面都不注入也不运行，非常干净。缺点是如果页面地址变了，需要手动更新`content_scripts`的配置。
 
 ## 默认详情页面
 ![默认详情页面](https://github.com/oppoic/LogFilter/blob/master/pic/detail-origin.png?raw=true)
+这是日志详情页面，都参杂在一起，而且每条都很长，基本没有可读性。这里同样可以通过`content_scripts`向这个页面注入`js`、`css`美化这个页面，看看效果
 ## 美化详情页面
 ![美化详情页面](https://github.com/oppoic/LogFilter/blob/master/pic/detail-format.png?raw=true)
 
