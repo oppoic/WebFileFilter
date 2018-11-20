@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     navBarLiClick(pNames[0]);
             }
             else {
-                $("body").html('<div class="container"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12"><h3>暂无日志，请稍后刷新重试！</h3></div></div></div>');
+                $("body").html('<div class="container"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12"><h3>暂无记录，请稍后刷新重试！</h3></div></div></div>');
             }
         }
         else {
