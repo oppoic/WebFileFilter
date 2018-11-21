@@ -2,7 +2,7 @@ console.log("content_scripts_list.js");
 document.addEventListener('DOMContentLoaded', function () {
     console.log('content_scripts_list.js DOMContentLoaded');
 
-    var logList = [];
+    var fileList = [];
     var preList = document.getElementsByTagName("pre");
     if (preList.length == 1) {
         var lineList = preList[0].innerHTML.split("\n");
@@ -14,9 +14,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     return true;//continue;
 
                 splitLinetext = v.split(/\s+/);
-                if (splitLinetext.length != 5)
+                if (splitLinetext.length != 5) {
+                    console.log(splitLinetext);
                     return true;
-                //console.log(splitLinetext);
+                }
 
                 fileName = splitLinetext[1].match(/>(\S*)</)[1];
                 //console.log(fileName);
@@ -24,13 +25,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     return true;
 
                 splitFileName = fileName.split('-');
-                if (splitFileName.length != 3)
+                if (splitFileName.length < 3) {
+                    console.log(splitFileName);
                     return true;
-                //console.log(splitFileName);
+                }
 
-                logList.push({ Project: splitFileName[0], LogDate: splitFileName[1], LogHour: splitFileName[2], LogChangeTime: formatDate(splitLinetext[2] + ' ' + splitLinetext[3]), LogSize: splitLinetext[4] });
+                fileList.push({ Project: splitFileName[0], LogDate: splitFileName[1], LogHour: splitFileName[2], LogChangeTime: formatDate(splitLinetext[2] + ' ' + splitLinetext[3]), LogSize: splitLinetext[4], FileName: fileName });
             });
-            //console.log(logList);
+            //console.log(fileList);
 
             var nodeDoctype = document.implementation.createDocumentType('html', '', '');
             if (document.doctype) {
@@ -40,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             $("html").attr("lang", "zh-CN");
-            $("head").html('<head><meta charset="UTF-8"><link rel="shortcut icon" href="" /><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>LogList</title></head>');
+            $("head").html('<head><meta charset="UTF-8"><link rel="shortcut icon" href="" /><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>FileList</title></head>');
 
             $("[rel='shortcut icon']").attr("href", chrome.extension.getURL("images/icon_16px.png"));
 
@@ -103,19 +105,19 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getProjectNames() {
-        return JSLINQ(logList).Distinct(function () { return this.Project; }).items;
+        return JSLINQ(fileList).Distinct(function () { return this.Project; }).items;
     }
 
     function getDistinctProjectLogDate(pName) {
-        return JSLINQ(logList).Where(function () { return this.Project == pName; }).Distinct(function () { return this.LogDate; }).items;
+        return JSLINQ(fileList).Where(function () { return this.Project == pName; }).Distinct(function () { return this.LogDate; }).items;
     }
 
     function getProjectLogFiles(pName, logDate) {
         if (logDate == 'all') {
-            return JSLINQ(logList).Where(function () { return this.Project == pName; }).Select("LogDate,LogHour,LogChangeTime,LogSize").items;
+            return JSLINQ(fileList).Where(function () { return this.Project == pName; }).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
         }
         else {
-            return JSLINQ(logList).Where(function () { return this.Project == pName && this.LogDate == logDate; }).Select("LogDate,LogHour,LogChangeTime,LogSize").items;
+            return JSLINQ(fileList).Where(function () { return this.Project == pName && this.LogDate == logDate; }).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
         }
     }
 
@@ -140,15 +142,15 @@ document.addEventListener('DOMContentLoaded', function () {
             liDate = 'all';
             $("#nav ul li:first").addClass("active");
         }
-        initLogList(liPName, liDate);
+        initFileList(liPName, liDate);
     }
 
     function navLiClick(liPName, liDate) {
         $("#nav ul li[data-date=\"" + liDate + "\"]").addClass("active").siblings().removeClass("active");
-        initLogList(liPName, liDate);
+        initFileList(liPName, liDate);
     }
 
-    function initLogList(pName, logDate) {
+    function initFileList(pName, logDate) {
         if (localStorage.pName != pName)
             localStorage.pName = pName;
         if (localStorage.logDate != logDate)
@@ -160,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $("#table").append("<thead><tr><th>文件名</th><th>时间</th><th>大小</th><th>操作</th></tr></thead><tbody>");
         if (fileList.length > 0) {
             $.each(fileList, function (i, v) {
-                $("#table").append("<tr><td>" + pName + "-" + v.LogDate + "-" + v.LogHour + "</td><td>" + v.LogChangeTime + "</td><td>" + v.LogSize + "</td><td><a href='" + pName + "-" + v.LogDate + "-" + v.LogHour + "' target='_blank'>查看</a></td></tr>");
+                $("#table").append("<tr><td>" + v.FileName + "</td><td>" + v.LogChangeTime + "</td><td>" + v.LogSize + "</td><td><a href='" + v.FileName + "' target='_blank'>查看</a></td></tr>");
             });
         }
         else {

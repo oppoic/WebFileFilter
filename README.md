@@ -1,5 +1,5 @@
 # 项目说明
-LogFilter是一款谷歌插件（Chrome Plugin），安装后可以美化web服务器输出的**文件列表**和**文件详情**页面。
+LogFilter是一款谷歌插件（Chrome Plugin），安装后可以美化web服务器输出的 **文件列表** 和 **文件详情** 页面。
 
 # 效果演示
 ## 默认文件列表
@@ -27,7 +27,12 @@ LogFilter是一款谷歌插件（Chrome Plugin），安装后可以美化web服�
 > 注：test目录有原始页面的源码文件，请参考。更多使用场景请自己发挥，代码稍做修改即可。
 
 # 使用方法
+## 本地加载
 下载本项目源码，打开Chrome浏览器 - 更多工具 - 扩展程序，打开“开发者模式” - 加载已解压的扩展程序 - 选择本项目源码的src目录 - 确定
+> 优点：代码随时可改，刷新即生效；缺点：每次打开`chrome`都有安全提示，点忽略才可以启动插件
+## chrome 网上应用店
+地址：https://chrome.google.com/webstore/detail/logfilter/cdeolmmphppafidkkkcbfejegimfngmc
+> 优点：自动升级；缺点：需FQ
 
 # 其他
 更多谷歌插件开发，请参考：[官方文档](https://developer.chrome.com/extensions/overview "点击在当前页打开")
