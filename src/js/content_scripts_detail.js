@@ -1,6 +1,6 @@
-console.log("content_scripts_detail.js");
+//console.log("content_scripts_detail.js");
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('content_scripts_detail.js DOMContentLoaded');
+    //console.log('content_scripts_detail.js DOMContentLoaded');
 
     var preList = document.getElementsByTagName("pre");
     if (preList.length == 1) {
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             $("html").attr("lang", "zh-CN");
-            $("head").html('<head><meta charset="UTF-8"><link rel="shortcut icon" href="" /><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>LogDetail</title></head>');
+            $("head").html('<head><meta charset="UTF-8"><link rel="shortcut icon" href="" /><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>FileDetail</title></head>');
 
             $("[rel='shortcut icon']").attr("href", chrome.extension.getURL("images/icon_16px.png"));
 

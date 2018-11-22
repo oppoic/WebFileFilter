@@ -1,6 +1,6 @@
-console.log("content_scripts_list.js");
+//console.log("content_scripts_list.js");
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('content_scripts_list.js DOMContentLoaded');
+    //console.log('content_scripts_list.js DOMContentLoaded');
 
     var fileList = [];
     var preList = document.getElementsByTagName("pre");
