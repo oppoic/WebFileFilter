@@ -1,12 +1,12 @@
 # 项目说明
-LogFilter是一款谷歌插件（Chrome Plugin），安装后可以美化web服务器输出的**文件列表**页面。
+LogFilter是一款谷歌插件（Chrome Extension），安装后可以美化web服务器输出的**文件列表**页面。
 
 # 效果演示
 ## 默认文件列表
-![默认文件列表](https://github.com/oppoic/LogFilter/blob/master/pic/list-origin.png?raw=true)
+![默认文件列表](https://github.com/oppoic/LogFilter/blob/background/pic/list-origin.png?raw=true)
 这是日志列表页面，不同项目的日志参杂在一起，找起来比较费劲。
 ## 美化文件列表
-![美化文件列表](https://github.com/oppoic/LogFilter/blob/master/pic/list-format.png?raw=true)
+![美化文件列表](https://github.com/oppoic/LogFilter/blob/background/pic/list-format.png?raw=true)
 
 # 使用本插件格式限定
 * 每行都必须包括文件名、文件日期、文件大小，这三个中间由1个或者n个空格连接
