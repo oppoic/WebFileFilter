@@ -1,5 +1,5 @@
 ## 说明
-WebFileFilter是一款谷歌插件（`Chrome Extension`），安装后可以美化（分类、排序、分页、搜索等）web服务器输出的**文件列表**页面。
+WebFileFilter是一款谷歌插件（`Chrome Extension`），安装后可以美化（归类、分页、搜索等）web服务器输出的**文件列表**页面。
 
 ## 注意
 `master`分支不再放置任何源码，请切换到其他分支查看
