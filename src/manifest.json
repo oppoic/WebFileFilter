@@ -1,7 +1,7 @@
 {
   "name": "WebFileFilter",
   "version": "1.0.3",
-  "description": "Fast sort your Logs",
+  "description": "fast sort your webpage files",
   "icons": {
     "16": "images/icon_16px.png",
     "48": "images/icon_48px.png",
