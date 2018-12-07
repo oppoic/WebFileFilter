@@ -120,14 +120,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function formatDate(dt) {
         var date = new Date(dt);
-        var aaaa = date.getFullYear();
-        var gg = date.getDate();
+        var yyyy = date.getFullYear();
+        var dd = date.getDate();
         var mm = (date.getMonth() + 1);
 
-        if (gg < 10) gg = "0" + gg;
+        if (dd < 10) dd = "0" + dd;
         if (mm < 10) mm = "0" + mm;
 
-        var cur_day = aaaa + "-" + mm + "-" + gg;
+        var cur_day = yyyy + "-" + mm + "-" + dd;
         var hours = date.getHours()
         var minutes = date.getMinutes()
         //var seconds = date.getSeconds();

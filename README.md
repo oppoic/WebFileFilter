@@ -20,14 +20,14 @@
     ]
 }
 ```
-如代码所示，通过在`manifest.json`文件里配置`content_scripts`节点，可以实现向`matches`里指定的页面里注入`js`、`css`。有了`js`、`css`，页面就可以随意渲染了。
+如代码所示，通过在`manifest.json`文件里配置`content_scripts`，可以实现向指定页面里注入`js`、`css`。有了`js`、`css`，页面就可以随意渲染了。
 > 注：`run_at`设置为`document_start`表示在页面展示之前就注入，同时渲染页面的`content_scripts_list.js`所有代码都需要写在页面`DOMContentLoaded`监听事件里面，例：
 ```
 document.addEventListener('DOMContentLoaded', function () {
     //your format page javascript...
 });
 ```
-这样处理的好处是：每次打开不会看到原始页面刷一下过去才显示美化后的页面，直接就显示美化后的页面，用户基本没有感知。
+这样处理的好处是：打开不会看到原始页面刷一下过去才显示美化后的页面，直接就显示美化后的页面，用户基本没有感知。
 > 注：`content_scripts`可以配置多个规则，实现向不同页面注入不同的`js`。
 
 ## 效果演示
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
 ## 使用本插件格式限定
 ### 文件列表页面
 * 每行都必须包括文件名、文件日期、文件大小，这三个中间由1个或者n个空格连接
-* 文件名固定格式：项目名-年月日-小时.txt（后缀名不限制，同时项目名里不能出现-），`js`根据“-”进行`split`然后分组。项目名去重后显示在顶部，日期在左侧，日志信息在右侧
+* 文件名固定格式：分类A-分类B-分类C（必须大于等于3个分类），`js`根据“-”进行`split`然后分组。分类A去重后显示在顶部，分类B去重后显示在左侧，右侧则显示文件的详细信息
 * 文件日期必须包含年月日时分。格式无需固定，*05-Nov-2018 16:43*、*2018-11-05 16:43*都是可以的
 * 每个文件名需在`a`标签里，所有`a`标签在`pre`标签里。`pre`下的第一个`a`标签是上一页链接，不会收录进来
 > 注：默认web服务器输出的文件列表页面，应该都满足这个格式。
@@ -56,13 +56,13 @@ document.addEventListener('DOMContentLoaded', function () {
 ## 使用方法
 ### 本地加载
 下载源码，打开Chrome浏览器 - 更多工具 - 扩展程序，打开“开发者模式” - 加载已解压的扩展程序 - 选择源码的src目录 - 确定
-> 优点：代码随时可改，刷新即生效；缺点：每次打开`chrome`都有安全提示，点忽略才可以启动插件
-### chrome 网上应用店
+> 优点：代码随时可改，刷新插件即生效；缺点：每次打开`chrome`都有安全提示，点忽略才可以启动插件
+### chrome应用商店
 地址：https://chrome.google.com/webstore/detail/logfilter/cdeolmmphppafidkkkcbfejegimfngmc
-> 不建议大家在谷歌商店下载，因为地址写死了没法配置。建议下载源码，然后选择本地加载。
+> 不建议在谷歌商店下载，因为地址写死了不能配置。建议下载源码，然后选择本地加载。
 
 ## 总结
-相比于`background`，本分支实现的`content_scripts`方式更干净，只往指定的页面注入代码。缺点也同样明显，就是不能动态配置需要注入代码的页面地址。如果你的地址不常变化，可以下载本分支代码，然后修改`matches`里的地址自己打包成`crx`文件使用。
+相比于`background`，本分支实现的`content_scripts`方式更干净，只往指定的页面注入代码。缺点也同样明显，就是不能动态配置需要注入代码的页面地址。如果你的地址不常变化，可以下载本分支代码，然后修改`matches`里的地址打包成`crx`文件使用。
 
 ## 其他
 更多谷歌插件开发，请参考：[官方文档](https://developer.chrome.com/extensions/overview "点击在当前页打开")
