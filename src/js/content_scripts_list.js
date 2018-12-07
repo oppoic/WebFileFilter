@@ -6,12 +6,20 @@ document.addEventListener('DOMContentLoaded', function () {
     var preList = document.getElementsByTagName("pre");
     if (preList.length == 1) {
         var lineList = preList[0].innerHTML.split("\n");
+        //console.log(lineList);
         if (lineList.length > 0) {
             var splitLinetext = []; var splitFileName = []; var fileName = '';
             $.each(lineList, function (i, v) {
                 //console.log(v);
-                if (i == 0 || v == undefined || v == "")
+                if (i == 0) {
                     return true;//continue;
+                }
+                if (v == undefined || v == "") {
+                    var line = parseInt(i);
+                    line += 1;
+                    console.log("line:" + line + " is empty");
+                    return true;
+                }
 
                 splitLinetext = v.split(/\s+/);
                 if (splitLinetext.length != 5) {
@@ -21,8 +29,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 fileName = splitLinetext[1].match(/>(\S*)</)[1];
                 //console.log(fileName);
-                if (fileName == null || fileName == '')
+                if (fileName == null || fileName == '') {
+                    console.log("fileName is or empty");
                     return true;
+                }
 
                 splitFileName = fileName.split('-');
                 if (splitFileName.length < 3) {
@@ -128,8 +138,10 @@ document.addEventListener('DOMContentLoaded', function () {
         $("#nav ul").append("<li data-pname=\"" + liPName + "\" data-date=\"all\"><a href='javascript:;'>all</a></li>");
 
         var liDate = '';
-        var listReverse = getDistinctProjectLogDate(liPName).reverse();
-        $.each(listReverse, function (i, v) {
+        var list = getDistinctProjectLogDate(liPName);
+        //list.sort();
+        list.reverse();
+        $.each(list, function (i, v) {
             if (localStorage.logDate != undefined && localStorage.pName != undefined && localStorage.pName == liPName && localStorage.logDate == v) {
                 liDate = localStorage.logDate;
                 $("#nav ul").append("<li class='active' data-pname=\"" + liPName + "\" data-date=\"" + v + "\"><a href='javascript:;'>" + v + "</a></li>");
@@ -156,7 +168,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (localStorage.logDate != logDate)
             localStorage.logDate = logDate;
 
-        var fileList = getProjectLogFiles(pName, logDate).reverse();
+        var fileList = getProjectLogFiles(pName, logDate);
+        //fileList.sort();
+        fileList.reverse();
 
         $("#table").empty();
         $("#table").append("<thead><tr><th>文件名</th><th>时间</th><th>大小</th><th>操作</th></tr></thead><tbody>");

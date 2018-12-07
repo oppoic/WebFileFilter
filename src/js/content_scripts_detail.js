@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var preList = document.getElementsByTagName("pre");
     if (preList.length == 1) {
         var lineList = preList[0].innerHTML.split("\n");
+        //console.log(lineList);
         if (lineList.length > 0) {
             var nodeDoctype = document.implementation.createDocumentType('html', '', '');
             if (document.doctype) {
@@ -28,7 +29,10 @@ document.addEventListener('DOMContentLoaded', function () {
             lineList.reverse();
             $.each(lineList, function (i, v) {
                 if (v == undefined || v == "") {
-                    return true;
+                    var line = parseInt(i);
+                    line += 1;
+                    console.log("line:" + line + " is empty");
+                    return true;//continue;
                 }
                 if (!ifLegalItem) {
                     ifLegalItem = true;
