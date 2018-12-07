@@ -32,16 +32,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 ## 效果演示
 ### 默认文件列表
-![默认文件列表](https://github.com/oppoic/LogFilter/blob/content-scripts/pic/list-origin.png)
+![默认文件列表](https://github.com/oppoic/WebFileFilter/blob/content-scripts/pic/list-origin.png)
 ### 美化文件列表
-![美化文件列表](https://github.com/oppoic/LogFilter/blob/content-scripts/pic/list-format.png)
+![美化文件列表](https://github.com/oppoic/WebFileFilter/blob/content-scripts/pic/list-format.png)
 
 ### 默认详情页面
-![默认详情页面](https://github.com/oppoic/LogFilter/blob/content-scripts/pic/detail-origin.png)
+![默认详情页面](https://github.com/oppoic/WebFileFilter/blob/content-scripts/pic/detail-origin.png)
 ### 美化详情页面
-![美化详情页面](https://github.com/oppoic/LogFilter/blob/content-scripts/pic/detail-format.png)
+![美化详情页面](https://github.com/oppoic/WebFileFilter/blob/content-scripts/pic/detail-format.png)
 
-## 使用本插件格式限定
+## 格式限定
 ### 文件列表页面
 * 每行都必须包括文件名、文件日期、文件大小，这三个中间由1个或者n个空格连接
 * 文件名固定格式：分类A-分类B-分类C（必须大于等于3个分类），`js`根据“-”进行`split`然后分组。分类A去重后显示在顶部，分类B去重后显示在左侧，右侧则显示文件的详细信息
@@ -53,12 +53,12 @@ document.addEventListener('DOMContentLoaded', function () {
 * 每个json对象必须包含：`Level`、`Time`、`LogStore`、`Source`，这四个属性作为重要信息左侧展示，其他属性点击了左侧的`nav`行在右侧展示
 > 注：test目录有原始页面的源码，请参考。更多使用场景请自己发挥，代码稍做修改即可。
 
-## 使用方法
+## 安装
 ### 本地加载
 下载源码，打开Chrome浏览器 - 更多工具 - 扩展程序，打开“开发者模式” - 加载已解压的扩展程序 - 选择源码的src目录 - 确定
 > 优点：代码随时可改，刷新插件即生效；缺点：每次打开`chrome`都有安全提示，点忽略才可以启动插件
-### chrome应用商店
-地址：https://chrome.google.com/webstore/detail/logfilter/cdeolmmphppafidkkkcbfejegimfngmc
+### 应用商店
+地址：~~https://chrome.google.com/webstore/detail/logfilter/cdeolmmphppafidkkkcbfejegimfngmc~~
 > 不建议在谷歌商店下载，因为地址写死了不能配置。建议下载源码，然后选择本地加载。
 
 ## 总结

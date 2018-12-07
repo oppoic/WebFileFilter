@@ -1,5 +1,5 @@
 {
-  "name": "LogFilter",
+  "name": "WebFileFilter",
   "version": "1.0.3",
   "description": "Fast sort your Logs",
   "icons": {
@@ -9,7 +9,7 @@
   },
   "browser_action": {
     "default_icon": "images/icon_16px.png",
-    "default_title": "LogFilter"
+    "default_title": "WebFileFilter"
   },
   "web_accessible_resources": [
     "images/icon_16px.png"
