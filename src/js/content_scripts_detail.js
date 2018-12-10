@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
             lineList.reverse();
             $.each(lineList, function (i, v) {
                 if (v == undefined || v == "") {
-                    var line = parseInt(i);
+                    var line = lineList.length - 1 - parseInt(i);
                     line += 1;
                     console.log("line:" + line + " is empty");
                     return true;//continue;
