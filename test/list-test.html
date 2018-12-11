@@ -40,9 +40,9 @@
             <div class="col-sm-10 col-md-10 col-lg-10">
                 <table id="table" class="table table-bordered"></table>
                 <ul class="pager">
-                    <span id="pageIndexSpan" title="页码">1</span>&nbsp;/
-                    <span id="pageSizeSpan" title="每页条数">10</span>&nbsp;/
-                    <span id="totalCountSpan" title="总数">123</span>&nbsp;
+                    <span id="pageIndexSpan" title="页码"></span>&nbsp;/
+                    <span id="pageSizeSpan" title="每页条数"></span>&nbsp;/
+                    <span id="totalCountSpan" title="总数"></span>&nbsp;
                     <li id="previousPageLi" class="disabled"><a href="javascript:;">上一页</a></li>
                     <li id="nextPageLi"><a href="javascript:;">下一页</a></li>
                 </ul>
@@ -63,6 +63,14 @@
         fileList.push({ Project: "vfs", LogDate: "20181101", LogHour: "13.txt", LogChangeTime: "2018-11-01 13:54", LogSize: "1", FileName: "vfs-20181101-13.txt" });
         fileList.push({ Project: "vfs", LogDate: "20181207", LogHour: "18.txt", LogChangeTime: "2018-12-07 18:07", LogSize: "5872", FileName: "vfs-20181207-18.txt" });
         fileList.push({ Project: "vfs", LogDate: "20181206", LogHour: "11.txt", LogChangeTime: "2018-12-06 18:07", LogSize: "123", FileName: "vfs-20181206-11.txt" });
+
+        var pageIndex = 1;
+        var pageSize = 10;
+        var totalCount = fileList.length;
+        $("#pageIndexSpan").text(pageIndex);
+        $("#pageSizeSpan").text(pageSize);
+        $("#totalCountSpan").text(totalCount);
+
 
         var pNames = getProjectNames();
         $.each(pNames, function (idx, val) {
