@@ -64,14 +64,6 @@
         fileList.push({ Project: "vfs", LogDate: "20181207", LogHour: "18.txt", LogChangeTime: "2018-12-07 18:07", LogSize: "5872", FileName: "vfs-20181207-18.txt" });
         fileList.push({ Project: "vfs", LogDate: "20181206", LogHour: "11.txt", LogChangeTime: "2018-12-06 18:07", LogSize: "123", FileName: "vfs-20181206-11.txt" });
 
-        var pageIndex = 1;
-        var pageSize = 10;
-        var totalCount = fileList.length;
-        $("#pageIndexSpan").text(pageIndex);
-        $("#pageSizeSpan").text(pageSize);
-        $("#totalCountSpan").text(totalCount);
-
-
         var pNames = getProjectNames();
         $.each(pNames, function (idx, val) {
             $("#navbar ul").append("<li data-value=\"" + val + "\"><a href='javascript:;'><strong>" + val + "</strong></a></li>");
@@ -168,6 +160,8 @@
             initFileList(liPName, liDate);
         }
 
+        var pageIndex = 0;
+        var pageSize = 10;
         function initFileList(pName, logDate) {
             if (localStorage.pName != pName)
                 localStorage.pName = pName;
@@ -177,6 +171,18 @@
             var fileList = getProjectLogFiles(pName, logDate);
             //fileList.sort();
             fileList.reverse();
+
+            console.log("initFileList:" + pName + "," + logDate);
+            console.log(JSLINQ(fileList).Skip(1).Take(1));
+
+            // var pageIndex = 1;
+            // var pageSize = 10;
+            // var totalCount = fileList.length;
+            // var totalPageCount = (totalCount + pageSize - 1) / pageSize;
+            // $("#pageIndexSpan").text(pageIndex);
+            // $("#pageSizeSpan").text(pageSize);
+            // $("#totalCountSpan").text(totalCount);
+
 
             $("#table").empty();
             $("#table").append("<thead><tr><th>文件名</th><th>时间</th><th>大小</th><th>操作</th></tr></thead><tbody>");
