@@ -120,7 +120,7 @@
             return JSLINQ(fileList).Where(function () { return this.Project == pName; }).Distinct(function () { return this.LogDate; }).items;
         }
 
-        function getProjectLogFiles(pName, logDate) {
+        function getProjectLogFiles(pName, logDate, pageIndex, pageSize) {
             if (logDate == 'all') {
                 return JSLINQ(fileList).Where(function () { return this.Project == pName; }).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
             }
@@ -160,28 +160,34 @@
             initFileList(liPName, liDate);
         }
 
-        var pageIndex = 0;
+        var pageIndex = 1;
         var pageSize = 10;
+        var totalCount = 0;
+        var totalPageCount = 0;
         function initFileList(pName, logDate) {
             if (localStorage.pName != pName)
                 localStorage.pName = pName;
             if (localStorage.logDate != logDate)
                 localStorage.logDate = logDate;
 
-            var fileList = getProjectLogFiles(pName, logDate);
+            if (localStorage.pageIndex != undefined && localStorage.pageIndex != "")
+                pageIndex = localStorage.pageIndex;
+            if (localStorage.pageSize != undefined && localStorage.pageSize != "")
+                pageSize = localStorage.pageSize;
+
+            var fileList = getProjectLogFiles(pName, logDate, pageIndex, pageSize);
             //fileList.sort();
             fileList.reverse();
 
-            console.log("initFileList:" + pName + "," + logDate);
-            console.log(JSLINQ(fileList).Skip(1).Take(1));
+            // console.log("initFileList:" + pName + "," + logDate);
+            // console.log(JSLINQ(fileList).Skip(1).Take(1));
 
-            // var pageIndex = 1;
-            // var pageSize = 10;
-            // var totalCount = fileList.length;
-            // var totalPageCount = (totalCount + pageSize - 1) / pageSize;
-            // $("#pageIndexSpan").text(pageIndex);
-            // $("#pageSizeSpan").text(pageSize);
-            // $("#totalCountSpan").text(totalCount);
+            totalCount = fileList.length;
+            totalPageCount = (totalCount + pageSize - 1) / pageSize;
+
+            $("#pageIndexSpan").text(pageIndex);
+            $("#pageSizeSpan").text(pageSize);
+            $("#totalCountSpan").text(totalCount);
 
 
             $("#table").empty();
