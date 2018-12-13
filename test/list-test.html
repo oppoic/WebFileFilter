@@ -90,6 +90,16 @@
             $(this).css("background", "#DCDCDC").siblings().css("background", "");
         });
 
+        $("body").on("click", "#previousPageLi", function () {
+
+
+        });
+
+        $("body").on("click", "#nextPageLi", function () {
+
+
+        });
+
         function formatDate(dt) {
             var date = new Date(dt);
             var aaaa = date.getFullYear();
@@ -122,10 +132,10 @@
 
         function getProjectLogFiles(pName, logDate, pageIndex, pageSize) {
             if (logDate == 'all') {
-                return JSLINQ(fileList).Where(function () { return this.Project == pName; }).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
+                return JSLINQ(fileList).Where(function () { return this.Project == pName; }).Skip(pageSize * (pageIndex - 1)).Take(pageSize).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
             }
             else {
-                return JSLINQ(fileList).Where(function () { return this.Project == pName && this.LogDate == logDate; }).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
+                return JSLINQ(fileList).Where(function () { return this.Project == pName && this.LogDate == logDate; }).Skip(pageSize * (pageIndex - 1)).Take(pageSize).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
             }
         }
 
@@ -139,6 +149,8 @@
         }
 
         function navBarLiClick(liPName) {
+            console.log("navBarLiClick");
+
             $("#navbar ul li[data-value=\"" + liPName + "\"]").addClass("active").siblings().removeClass("active");
 
             $("#nav ul").empty();
@@ -165,40 +177,49 @@
         }
 
         function navLiClick(liPName, liDate) {
+            console.log("navLiClick");
+
             $("#nav ul li[data-date=\"" + liDate + "\"]").addClass("active").siblings().removeClass("active");
             initFileList(liPName, liDate);
         }
 
         function initFileList(pName, logDate) {
+            if (localStorage.pName != pName || localStorage.logDate != logDate) {
+                console.log("pageIndex and pageSize init");
+                localStorage.pageIndex = 1;
+                localStorage.pageSize = 1;
+            }
+
             if (localStorage.pName != pName) {
                 localStorage.pName = pName;
             }
             if (localStorage.logDate != logDate) {
                 localStorage.logDate = logDate;
             }
-            if (localStorage.pName != pName || localStorage.logDate != logDate) {
-                localStorage.pageIndex = 1;
-                localStorage.pageSize = 10;
-            }
-            else
-            {
-                
-            }
 
-            var fileList = getProjectLogFiles(pName, logDate, pageIndex, pageSize);
             var totalCount = getProjectLogFilesCount(pName, logDate);
+            var fileList = getProjectLogFiles(pName, logDate, localStorage.pageIndex, localStorage.pageSize);
             //fileList.sort();
-            fileList.reverse();
+            fileList.reverse();//           这里需要修改
 
-            var totalPageCount = (totalCount + pageSize - 1) / pageSize;
+            var totalPageCount = (parseInt(totalCount) + parseInt(localStorage.pageSize) - 1) / parseInt(localStorage.pageSize);
+            if (localStorage.pageIndex == 1) {
+                $("#previousPageLi").addClass("disabled");
+            }
+            else {
+                $("#previousPageLi").removeClass("disabled");
+            }
+            if (localStorage.pageIndex == totalPageCount) {
+                $("#nextPageLi").addClass("disabled");
+            }
+            else {
+                $("#nextPageLi").removeClass("disabled");
+            }
 
-            $("#pageIndexSpan").text(pageIndex);
-            $("#pageSizeSpan").text(pageSize);
+
+            $("#pageIndexSpan").text(localStorage.pageIndex);
+            $("#pageSizeSpan").text(localStorage.pageSize);
             $("#totalCountSpan").text(totalCount);
-
-            // console.log("initFileList:" + pName + "," + logDate);
-            // console.log(JSLINQ(fileList).Skip(1).Take(1));
-
 
 
             $("#table").empty();
