@@ -43,7 +43,7 @@
                     <span id="pageIndexSpan" title="页码"></span>&nbsp;/
                     <span id="pageSizeSpan" title="每页条数"></span>&nbsp;/
                     <span id="totalCountSpan" title="总数"></span>&nbsp;
-                    <li id="previousPageLi" class="disabled"><a href="javascript:;">上一页</a></li>
+                    <li id="previousPageLi"><a href="javascript:;">上一页</a></li>
                     <li id="nextPageLi"><a href="javascript:;">下一页</a></li>
                 </ul>
             </div>
@@ -129,6 +129,15 @@
             }
         }
 
+        function getProjectLogFilesCount(pName, logDate) {
+            if (logDate == 'all') {
+                return JSLINQ(fileList).Count(function () { return this.Project == pName; });
+            }
+            else {
+                return JSLINQ(fileList).Count(function () { return this.Project == pName && this.LogDate == logDate; });
+            }
+        }
+
         function navBarLiClick(liPName) {
             $("#navbar ul li[data-value=\"" + liPName + "\"]").addClass("active").siblings().removeClass("active");
 
@@ -160,34 +169,36 @@
             initFileList(liPName, liDate);
         }
 
-        var pageIndex = 1;
-        var pageSize = 10;
-        var totalCount = 0;
-        var totalPageCount = 0;
         function initFileList(pName, logDate) {
-            if (localStorage.pName != pName)
+            if (localStorage.pName != pName) {
                 localStorage.pName = pName;
-            if (localStorage.logDate != logDate)
+            }
+            if (localStorage.logDate != logDate) {
                 localStorage.logDate = logDate;
-
-            if (localStorage.pageIndex != undefined && localStorage.pageIndex != "")
-                pageIndex = localStorage.pageIndex;
-            if (localStorage.pageSize != undefined && localStorage.pageSize != "")
-                pageSize = localStorage.pageSize;
+            }
+            if (localStorage.pName != pName || localStorage.logDate != logDate) {
+                localStorage.pageIndex = 1;
+                localStorage.pageSize = 10;
+            }
+            else
+            {
+                
+            }
 
             var fileList = getProjectLogFiles(pName, logDate, pageIndex, pageSize);
+            var totalCount = getProjectLogFilesCount(pName, logDate);
             //fileList.sort();
             fileList.reverse();
 
-            // console.log("initFileList:" + pName + "," + logDate);
-            // console.log(JSLINQ(fileList).Skip(1).Take(1));
-
-            totalCount = fileList.length;
-            totalPageCount = (totalCount + pageSize - 1) / pageSize;
+            var totalPageCount = (totalCount + pageSize - 1) / pageSize;
 
             $("#pageIndexSpan").text(pageIndex);
             $("#pageSizeSpan").text(pageSize);
             $("#totalCountSpan").text(totalCount);
+
+            // console.log("initFileList:" + pName + "," + logDate);
+            // console.log(JSLINQ(fileList).Skip(1).Take(1));
+
 
 
             $("#table").empty();
