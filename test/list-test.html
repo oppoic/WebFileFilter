@@ -40,9 +40,9 @@
             <div class="col-sm-10 col-md-10 col-lg-10">
                 <table id="table" class="table table-bordered"></table>
                 <ul class="pager">
-                    <span id="pageIndexSpan" title="页码"></span>&nbsp;/
+                    <span id="pageIndexSpan" title="当前页码"></span>&nbsp;/
                     <span id="pageSizeSpan" title="每页条数"></span>&nbsp;/
-                    <span id="totalCountSpan" title="总数"></span>&nbsp;
+                    <span id="totalCountSpan" title="总记录数"></span>&nbsp;
                     <li id="previousPageLi"><a href="javascript:;">上一页</a></li>
                     <li id="nextPageLi"><a href="javascript:;">下一页</a></li>
                 </ul>
@@ -91,13 +91,21 @@
         });
 
         $("body").on("click", "#previousPageLi", function () {
-
-
+            if (localStorage.pageIndex != 1) {
+                localStorage.pageIndex = parseInt(localStorage.pageIndex) - 1;
+                initFileList(localStorage.pName, localStorage.logDate);
+            }
         });
 
         $("body").on("click", "#nextPageLi", function () {
-
-
+            var totalPageCount = (parseInt(localStorage.totalCount) + parseInt(localStorage.pageSize) - 1) / parseInt(localStorage.pageSize);
+            // console.log(localStorage.pageIndex);
+            // console.log((parseInt(localStorage.totalCount) + parseInt(localStorage.pageSize) - 1));
+            // console.log(totalPageCount);
+            if (localStorage.pageIndex != totalPageCount) {
+                localStorage.pageIndex = parseInt(localStorage.pageIndex) + 1;
+                initFileList(localStorage.pName, localStorage.logDate);
+            }
         });
 
         function formatDate(dt) {
@@ -130,12 +138,31 @@
             return JSLINQ(fileList).Where(function () { return this.Project == pName; }).Distinct(function () { return this.LogDate; }).items;
         }
 
-        function getProjectLogFiles(pName, logDate, pageIndex, pageSize) {
-            if (logDate == 'all') {
-                return JSLINQ(fileList).Where(function () { return this.Project == pName; }).Skip(pageSize * (pageIndex - 1)).Take(pageSize).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
+        function getProjectLogFiles(pName, logDate) {
+            var totalPageCount = (parseInt(localStorage.totalCount) + parseInt(localStorage.pageSize) - 1) / parseInt(localStorage.pageSize);
+
+            if (localStorage.pageIndex == 1) {
+                $("#previousPageLi").addClass("disabled");
             }
             else {
-                return JSLINQ(fileList).Where(function () { return this.Project == pName && this.LogDate == logDate; }).Skip(pageSize * (pageIndex - 1)).Take(pageSize).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
+                $("#previousPageLi").removeClass("disabled");
+            }
+            if (localStorage.pageIndex == totalPageCount) {
+                $("#nextPageLi").addClass("disabled");
+            }
+            else {
+                $("#nextPageLi").removeClass("disabled");
+            }
+
+            $("#pageIndexSpan").text(localStorage.pageIndex);
+            $("#pageSizeSpan").text(localStorage.pageSize);
+            $("#totalCountSpan").text(localStorage.totalCount);
+
+            if (logDate == 'all') {
+                return JSLINQ(fileList).Reverse().Where(function () { return this.Project == pName; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
+            }
+            else {
+                return JSLINQ(fileList).Reverse().Where(function () { return this.Project == pName && this.LogDate == logDate; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
             }
         }
 
@@ -149,8 +176,6 @@
         }
 
         function navBarLiClick(liPName) {
-            console.log("navBarLiClick");
-
             $("#navbar ul li[data-value=\"" + liPName + "\"]").addClass("active").siblings().removeClass("active");
 
             $("#nav ul").empty();
@@ -177,17 +202,14 @@
         }
 
         function navLiClick(liPName, liDate) {
-            console.log("navLiClick");
-
             $("#nav ul li[data-date=\"" + liDate + "\"]").addClass("active").siblings().removeClass("active");
             initFileList(liPName, liDate);
         }
 
         function initFileList(pName, logDate) {
             if (localStorage.pName != pName || localStorage.logDate != logDate) {
-                console.log("pageIndex and pageSize init");
                 localStorage.pageIndex = 1;
-                localStorage.pageSize = 1;
+                localStorage.pageSize = 2;
             }
 
             if (localStorage.pName != pName) {
@@ -198,29 +220,11 @@
             }
 
             var totalCount = getProjectLogFilesCount(pName, logDate);
-            var fileList = getProjectLogFiles(pName, logDate, localStorage.pageIndex, localStorage.pageSize);
-            //fileList.sort();
-            fileList.reverse();//           这里需要修改
-
-            var totalPageCount = (parseInt(totalCount) + parseInt(localStorage.pageSize) - 1) / parseInt(localStorage.pageSize);
-            if (localStorage.pageIndex == 1) {
-                $("#previousPageLi").addClass("disabled");
-            }
-            else {
-                $("#previousPageLi").removeClass("disabled");
-            }
-            if (localStorage.pageIndex == totalPageCount) {
-                $("#nextPageLi").addClass("disabled");
-            }
-            else {
-                $("#nextPageLi").removeClass("disabled");
+            if (localStorage.totalCount != totalCount) {
+                localStorage.totalCount = totalCount;
             }
 
-
-            $("#pageIndexSpan").text(localStorage.pageIndex);
-            $("#pageSizeSpan").text(localStorage.pageSize);
-            $("#totalCountSpan").text(totalCount);
-
+            var fileList = getProjectLogFiles(pName, logDate);
 
             $("#table").empty();
             $("#table").append("<thead><tr><th>文件名</th><th>时间</th><th>大小</th><th>操作</th></tr></thead><tbody>");
