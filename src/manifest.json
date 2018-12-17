@@ -21,7 +21,8 @@
         "http://115.28.113.150:55000/log/"
       ],
       "css": [
-        "css/bootstrap.min.css"
+        "css/bootstrap.min.css",
+        "css/mycss.css"
       ],
       "js": [
         "js/jquery.min.js",

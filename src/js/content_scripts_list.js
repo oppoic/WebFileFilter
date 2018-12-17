@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             $("[rel='shortcut icon']").attr("href", chrome.extension.getURL("images/icon_16px.png"));
 
-            $("body").removeAttr("bgcolor").html('<nav class="navbar navbar-default navbar-static-top"><div class="container"><div class="row"><div class="col-sm-2 col-md-2 col-lg-2"></div><div class="col-sm-10 col-md-10 col-lg-10"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div><div id="navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav"></ul></div></div></div></div></nav><div class="container"><div class="row"><div id="nav" class="col-sm-2 col-md-2 col-lg-2"><ul class="nav nav-pills nav-stacked"></ul></div><div class="col-sm-10 col-md-10 col-lg-10"><table id="table" class="table table-bordered"></table></div></div></div>');
+            $("body").removeAttr("bgcolor").html('<nav class="navbar navbar-default navbar-static-top"><div class="container"><div class="row"><div class="col-sm-2 col-md-2 col-lg-2"></div><div class="col-sm-10 col-md-10 col-lg-10"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div><div id="navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav"></ul></div></div></div></div></nav><div class="container"><div class="row"><div id="nav" class="col-sm-2 col-md-2 col-lg-2"><ul class="nav nav-pills nav-stacked"></ul></div><div class="col-sm-10 col-md-10 col-lg-10"><table id="table" class="table table-bordered"></table><ul class="pager"><span id="pageIndexSpan" title="当前页码"></span>&nbsp;/<span id="pageSizeSpan" title="每页条数"></span>&nbsp;/<span id="totalCountSpan" title="总记录数"></span>&nbsp;<li id="previousPageLi"><a href="javascript:;">上一页</a></li><li id="nextPageLi"><a href="javascript:;">下一页</a></li></ul></div></div></div>');
 
             var pNames = getProjectNames();
             $.each(pNames, function (idx, val) {
@@ -92,6 +92,21 @@ document.addEventListener('DOMContentLoaded', function () {
         $(this).css("background", "#DCDCDC").siblings().css("background", "");
     });
 
+    $("body").on("click", "#previousPageLi", function () {
+        if (localStorage.pageIndex != 1) {
+            localStorage.pageIndex = parseInt(localStorage.pageIndex) - 1;
+            initFileList(localStorage.pName, localStorage.logDate);
+        }
+    });
+
+    $("body").on("click", "#nextPageLi", function () {
+        var totalPageCount = localStorage.totalCount % localStorage.pageSize == 0 ? localStorage.totalCount / localStorage.pageSize : Math.ceil(localStorage.totalCount / localStorage.pageSize);
+        if (localStorage.pageIndex != totalPageCount) {
+            localStorage.pageIndex = parseInt(localStorage.pageIndex) + 1;
+            initFileList(localStorage.pName, localStorage.logDate);
+        }
+    });
+
     function formatDate(dt) {
         var date = new Date(dt);
         var aaaa = date.getFullYear();
@@ -123,11 +138,39 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getProjectLogFiles(pName, logDate) {
-        if (logDate == 'all') {
-            return JSLINQ(fileList).Where(function () { return this.Project == pName; }).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
+        var totalPageCount = localStorage.totalCount % localStorage.pageSize == 0 ? localStorage.totalCount / localStorage.pageSize : Math.ceil(localStorage.totalCount / localStorage.pageSize);
+
+        if (localStorage.pageIndex == 1) {
+            $("#previousPageLi").addClass("disabled");
         }
         else {
-            return JSLINQ(fileList).Where(function () { return this.Project == pName && this.LogDate == logDate; }).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
+            $("#previousPageLi").removeClass("disabled");
+        }
+        if (localStorage.pageIndex == totalPageCount) {
+            $("#nextPageLi").addClass("disabled");
+        }
+        else {
+            $("#nextPageLi").removeClass("disabled");
+        }
+
+        $("#pageIndexSpan").text(localStorage.pageIndex);
+        $("#pageSizeSpan").text(localStorage.pageSize);
+        $("#totalCountSpan").text(localStorage.totalCount);
+
+        if (logDate == 'all') {
+            return JSLINQ(fileList).Reverse().Where(function () { return this.Project == pName; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
+        }
+        else {
+            return JSLINQ(fileList).Reverse().Where(function () { return this.Project == pName && this.LogDate == logDate; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
+        }
+    }
+
+    function getProjectLogFilesCount(pName, logDate) {
+        if (logDate == 'all') {
+            return JSLINQ(fileList).Count(function () { return this.Project == pName; });
+        }
+        else {
+            return JSLINQ(fileList).Count(function () { return this.Project == pName && this.LogDate == logDate; });
         }
     }
 
@@ -163,14 +206,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function initFileList(pName, logDate) {
-        if (localStorage.pName != pName)
+        if (localStorage.pName != pName || localStorage.logDate != logDate) {
+            localStorage.pageIndex = 1;
+            localStorage.pageSize = 12;
+        }
+
+        if (localStorage.pName != pName) {
             localStorage.pName = pName;
-        if (localStorage.logDate != logDate)
+        }
+        if (localStorage.logDate != logDate) {
             localStorage.logDate = logDate;
+        }
+
+        var totalCount = getProjectLogFilesCount(pName, logDate);
+        if (localStorage.totalCount != totalCount) {
+            localStorage.totalCount = totalCount;
+        }
 
         var fileList = getProjectLogFiles(pName, logDate);
-        //fileList.sort();
-        fileList.reverse();
 
         $("#table").empty();
         $("#table").append("<thead><tr><th>文件名</th><th>时间</th><th>大小</th><th>操作</th></tr></thead><tbody>");

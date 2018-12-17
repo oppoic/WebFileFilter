@@ -98,10 +98,7 @@
         });
 
         $("body").on("click", "#nextPageLi", function () {
-            var totalPageCount = (parseInt(localStorage.totalCount) + parseInt(localStorage.pageSize) - 1) / parseInt(localStorage.pageSize);
-            // console.log(localStorage.pageIndex);
-            // console.log((parseInt(localStorage.totalCount) + parseInt(localStorage.pageSize) - 1));
-            // console.log(totalPageCount);
+            var totalPageCount = localStorage.totalCount % localStorage.pageSize == 0 ? localStorage.totalCount / localStorage.pageSize : Math.ceil(localStorage.totalCount / localStorage.pageSize);
             if (localStorage.pageIndex != totalPageCount) {
                 localStorage.pageIndex = parseInt(localStorage.pageIndex) + 1;
                 initFileList(localStorage.pName, localStorage.logDate);
@@ -139,7 +136,7 @@
         }
 
         function getProjectLogFiles(pName, logDate) {
-            var totalPageCount = (parseInt(localStorage.totalCount) + parseInt(localStorage.pageSize) - 1) / parseInt(localStorage.pageSize);
+            var totalPageCount = localStorage.totalCount % localStorage.pageSize == 0 ? localStorage.totalCount / localStorage.pageSize : Math.ceil(localStorage.totalCount / localStorage.pageSize);
 
             if (localStorage.pageIndex == 1) {
                 $("#previousPageLi").addClass("disabled");
@@ -209,7 +206,7 @@
         function initFileList(pName, logDate) {
             if (localStorage.pName != pName || localStorage.logDate != logDate) {
                 localStorage.pageIndex = 1;
-                localStorage.pageSize = 2;
+                localStorage.pageSize = 12;
             }
 
             if (localStorage.pName != pName) {
