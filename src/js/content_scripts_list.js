@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             $("[rel='shortcut icon']").attr("href", chrome.extension.getURL("images/icon_16px.png"));
 
-            $("body").removeAttr("bgcolor").html('<nav class="navbar navbar-default navbar-static-top"><div class="container"><div class="row"><div class="col-sm-2 col-md-2 col-lg-2"></div><div class="col-sm-10 col-md-10 col-lg-10"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div><div id="navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav"></ul></div></div></div></div></nav><div class="container"><div class="row"><div id="nav" class="col-sm-2 col-md-2 col-lg-2"><ul class="nav nav-pills nav-stacked"></ul></div><div class="col-sm-10 col-md-10 col-lg-10"><table id="table" class="table table-bordered"></table><ul class="pager"><span id="pageIndexSpan" title="当前页码"></span>&nbsp;/<span id="pageSizeSpan" title="每页条数"></span>&nbsp;/<span id="totalCountSpan" title="总记录数"></span>&nbsp;<li id="previousPageLi"><a href="javascript:;">上一页</a></li><li id="nextPageLi"><a href="javascript:;">下一页</a></li></ul></div></div></div>');
+            $("body").removeAttr("bgcolor").html('<nav class="navbar navbar-default navbar-static-top"><div class="container"><div class="row"><div class="col-sm-2 col-md-2 col-lg-2"></div><div class="col-sm-10 col-md-10 col-lg-10"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div><div id="navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav"></ul></div></div></div></div></nav><div class="container"><div class="row"><div id="nav" class="col-sm-2 col-md-2 col-lg-2"><ul class="nav nav-pills nav-stacked"></ul></div><div class="col-sm-10 col-md-10 col-lg-10"><table id="table" class="table table-bordered"></table><ul class="pager"><span id="pageIndexSpan" title="当前页码"></span>&nbsp;/&nbsp;<span id="pageSizeSpan" title="每页条数"></span>&nbsp;/&nbsp;<span id="totalCountSpan" title="总记录数"></span>&nbsp;&nbsp;<li id="previousPageLi"><a href="javascript:;">上一页</a></li>&nbsp;<li id="nextPageLi"><a href="javascript:;">下一页</a></li></ul></div></div></div>');
 
             var pNames = getProjectNames();
             $.each(pNames, function (idx, val) {
@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function initFileList(pName, logDate) {
         if (localStorage.pName != pName || localStorage.logDate != logDate) {
             localStorage.pageIndex = 1;
-            localStorage.pageSize = 12;
+            localStorage.pageSize = 10;
         }
 
         if (localStorage.pName != pName) {
