@@ -1,18 +1,29 @@
 {
   "name": "WebFileFilter",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "fast sort your webpage files",
   "icons": {
-    "16": "images/icon_16px.png",
-    "48": "images/icon_48px.png",
-    "128": "images/icon_128px.png"
+    "16": "images/16.png",
+    "48": "images/48.png",
+    "128": "images/128.png"
   },
   "browser_action": {
-    "default_icon": "images/icon_16px.png",
+    "default_icon": "images/16.png",
     "default_title": "WebFileFilter"
   },
   "web_accessible_resources": [
-    "images/icon_16px.png"
+    "images/16.png"
   ],
+  "permissions": [
+    "tabs",
+    "http://*/*", 
+    "https://*/*"
+  ],
+  "background": {
+    "scripts": [
+      "js/background.js"
+    ],
+    "persistent": false
+  },
   "manifest_version": 2
 }
