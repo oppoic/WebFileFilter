@@ -4,7 +4,7 @@ chrome.browserAction.onClicked.addListener(function (tab) {
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     //console.log(changeInfo);
-    if (changeInfo.status == "loading"/*"loading"*//*"complete"*/) {
+    if (changeInfo.status == "complete"/*"loading"*//*"complete"*/) {
         //console.log(tab);
 
         var url = tab.url;
@@ -18,11 +18,19 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                 console.log("url matched");
 
                 chrome.tabs.executeScript(tabId, {
-                    file: 'js/filelist.js'
+                    file: 'js/jquery.min.js' //, runAt: 'document_start'
                 }, _ => {
                     let e = chrome.runtime.lastError;
                     if (e !== undefined) {
                         console.log(tabId, _, e);
+                    }
+                    else {
+                        chrome.tabs.insertCSS(tabId, { file: "css/bootstrap.min.css" });
+                        chrome.tabs.insertCSS(tabId, { file: "css/mycss.css" });
+
+                        chrome.tabs.executeScript(tabId, { file: "js/jslinq.js" });
+                        chrome.tabs.executeScript(tabId, { file: "js/bootstrap.min.js" });
+                        chrome.tabs.executeScript(tabId, { file: "js/filelist.js" });
                     }
                 });
             }

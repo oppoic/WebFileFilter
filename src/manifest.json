@@ -11,6 +11,9 @@
     "default_icon": "images/16.png",
     "default_title": "WebFileFilter"
   },
+  "web_accessible_resources": [
+    "images/16.png"
+  ],
   "options_page": "settings.html",
   "permissions": [
     "tabs",

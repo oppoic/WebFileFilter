@@ -1,0 +1,46 @@
+.pager {
+    text-align: right;
+}
+
+fieldset {
+    padding: .35em .625em .75em;
+    margin: 0 2px;
+    border: 1px solid silver
+}
+
+legend {
+    padding: .5em;
+    border: 0;
+    width: auto;
+    margin-bottom: 0px;
+}
+
+.json_key {
+    color: #92278f;
+    font-weight: bold;
+}
+
+.json_null {
+    color: #f1592a;
+    font-weight: bold;
+}
+
+.json_string {
+    color: #3ab54a;
+    font-weight: bold;
+}
+
+.json_number {
+    color: #25aae2;
+    font-weight: bold;
+}
+
+.json_boolean {
+    color: #f98280;
+    font-weight: bold;
+}
+
+.json_link {
+    color: #61D2D6;
+    font-weight: bold;
+}
