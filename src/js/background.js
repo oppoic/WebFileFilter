@@ -14,14 +14,15 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                 console.log("url matched");
 
                 chrome.tabs.executeScript(tabId, {
-                    code: 'document.body.setAttribute("style","display:none");var div = document.createElement("div");div.className = "loader";div.innerHTML = "<span></span><span></span><span></span>";document.body.insertBefore(div, document.body.firstElementChild);', runAt: 'document_start'
+                    //document.body.setAttribute("style","display:none");
+                    code: 'var div = document.createElement("div");div.className = "loader";div.innerHTML = "<span></span><span></span><span></span>";document.body.insertBefore(div, document.body.firstElementChild);', runAt: 'document_start'
                 }, _ => {
                     let e = chrome.runtime.lastError;
                     if (e !== undefined) {
                         console.log(tabId, _, e);
                     }
                     else {
-                        chrome.tabs.insertCSS(tabId, { file: "css/loading.css" });
+                        chrome.tabs.insertCSS(tabId, { file: "css/loading.css", runAt: 'document_start' });
                     }
                 });
             }
