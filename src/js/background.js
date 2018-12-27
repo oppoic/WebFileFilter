@@ -3,10 +3,12 @@ chrome.browserAction.onClicked.addListener(function (tab) {
 });
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-    //console.log(changeInfo);
+    //console.log(changeInfo.status);
 
-    if (changeInfo.status == "loading"/*"loading"*//*"complete"*/) {
+    if (changeInfo.status == "loading") {
         var url = tab.url;
+        //console.log("loading:" + url);
+
         if (localStorage.url != undefined && localStorage.url != '') {
             var urlList = localStorage.url.split("\n");
 
@@ -14,8 +16,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                 console.log("url matched");
 
                 chrome.tabs.executeScript(tabId, {
-                    //document.body.setAttribute("style","display:none");
-                    code: 'var div = document.createElement("div");div.className = "loader";div.innerHTML = "<span></span><span></span><span></span>";document.body.insertBefore(div, document.body.firstElementChild);', runAt: 'document_start'
+                    code: 'document.body.childNodes.forEach(function(el,idx){if(el.tagName!=undefined){el.setAttribute("style","display:none");}});var div = document.createElement("div");div.className = "loader";div.innerHTML = "<span></span><span></span><span></span>";document.body.insertBefore(div, document.body.firstElementChild);', runAt: 'document_start'
                 }, _ => {
                     let e = chrome.runtime.lastError;
                     if (e !== undefined) {
@@ -27,47 +28,35 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                 });
             }
         }
-        else {
-            console.log("url not found");
-        }
     };
 
-    // if (changeInfo.status == "complete"/*"loading"*//*"complete"*/) {
-    //     //console.log(tab);
+    if (changeInfo.status == "complete") {
+        var url = tab.url;
+        //console.log("complete:" + url);
 
-    //     var url = tab.url;
-    //     //console.log(url);
+        if (localStorage.url != undefined && localStorage.url != '') {
+            var urlList = localStorage.url.split("\n");
 
-    //     if (localStorage.url != undefined && localStorage.url != '') {
-    //         var urlList = localStorage.url.split("\n");
-    //         //console.log(urlList);
+            if (urlList.indexOf(url) != -1) {
+                //console.log("url matched");
 
-    //         if (urlList.indexOf(url) != -1) {
-    //             console.log("url matched");
+                chrome.tabs.executeScript(tabId, {
+                    file: 'js/jquery.min.js'
+                }, _ => {
+                    let e = chrome.runtime.lastError;
+                    if (e !== undefined) {
+                        console.log(tabId, _, e);
+                    }
+                    else {
+                        chrome.tabs.insertCSS(tabId, { file: "css/bootstrap.min.css" });
+                        chrome.tabs.insertCSS(tabId, { file: "css/mycss.css" });
 
-    //             chrome.tabs.executeScript(tabId, {
-    //                 file: 'js/jquery.min.js' //, runAt: 'document_start'
-    //                 //file: 'js/loading.js'
-    //             }, _ => {
-    //                 let e = chrome.runtime.lastError;
-    //                 if (e !== undefined) {
-    //                     console.log(tabId, _, e);
-    //                 }
-    //                 else {
-    //                     chrome.tabs.insertCSS(tabId, { file: "css/bootstrap.min.css" });
-    //                     chrome.tabs.insertCSS(tabId, { file: "css/mycss.css" });
-    //                     //chrome.tabs.insertCSS(tabId, { file: "css/loading.css" });
-
-    //                     //chrome.tabs.executeScript(tabId, { file: "js/jquery.min.js" });
-    //                     chrome.tabs.executeScript(tabId, { file: "js/jslinq.js" });
-    //                     chrome.tabs.executeScript(tabId, { file: "js/bootstrap.min.js" });
-    //                     chrome.tabs.executeScript(tabId, { file: "js/filelist.js" });
-    //                 }
-    //             });
-    //         }
-    //     }
-    //     else {
-    //         console.log("url not found");
-    //     }
-    // };
+                        chrome.tabs.executeScript(tabId, { file: "js/jslinq.js" });
+                        chrome.tabs.executeScript(tabId, { file: "js/bootstrap.min.js" });
+                        chrome.tabs.executeScript(tabId, { file: "js/filelist.js" });
+                    }
+                });
+            }
+        }
+    };
 }); 
