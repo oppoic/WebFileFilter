@@ -18,7 +18,8 @@
     {
       "matches": [
         "http://115.28.115.220:5000/log/",
-        "http://115.28.113.150:55000/log/"
+        "http://115.28.113.150:55000/log/",
+        "https://jiacrontab.iwannay.cn/download/"
       ],
       "css": [
         "css/bootstrap.min.css",

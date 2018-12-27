@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     return true;
                 }
 
-                fileList.push({ Project: splitFileName[0], LogDate: splitFileName[1], LogHour: splitFileName[2], LogChangeTime: formatDate(splitLinetext[2] + ' ' + splitLinetext[3]), LogSize: splitLinetext[4], FileName: fileName });
+                fileList.push({ PartA: splitFileName[0], PartB: splitFileName[1], FileTime: formatDate(splitLinetext[2] + ' ' + splitLinetext[3]), FileSize: splitLinetext[4], FileName: fileName });
             });
             //console.log(fileList);
 
@@ -56,20 +56,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
             $("[rel='shortcut icon']").attr("href", chrome.extension.getURL("images/icon_16px.png"));
 
-            $("body").removeAttr("bgcolor").html('<nav class="navbar navbar-default navbar-static-top"><div class="container"><div class="row"><div class="col-sm-2 col-md-2 col-lg-2"></div><div class="col-sm-10 col-md-10 col-lg-10"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div><div id="navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav"></ul></div></div></div></div></nav><div class="container"><div class="row"><div id="nav" class="col-sm-2 col-md-2 col-lg-2"><ul class="nav nav-pills nav-stacked"></ul></div><div class="col-sm-10 col-md-10 col-lg-10"><table id="table" class="table table-bordered"></table><ul class="pager"><span id="pageIndexSpan" title="当前页码"></span>&nbsp;/&nbsp;<span id="pageSizeSpan" title="每页条数"></span>&nbsp;/&nbsp;<span id="totalCountSpan" title="总记录数"></span>&nbsp;&nbsp;<li id="previousPageLi"><a href="javascript:;">上一页</a></li>&nbsp;<li id="nextPageLi"><a href="javascript:;">下一页</a></li></ul></div></div></div>');
+            $("body").removeAttr("bgcolor").html('<nav class="navbar navbar-default navbar-static-top"><div class="container"><div class="row"><div class="col-sm-2 col-md-2 col-lg-2"></div><div class="col-sm-10 col-md-10 col-lg-10"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div><div id="navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav"></ul></div></div></div></div></nav><div class="container"><div class="row"><div id="nav" class="col-sm-2 col-md-2 col-lg-2"><ul class="nav nav-pills nav-stacked"></ul></div><div class="col-sm-10 col-md-10 col-lg-10"><table id="table" class="table table-bordered"></table><ul class="pager"><span id="pageIndexSpan"></span>&nbsp;/&nbsp;<span id="pageSizeSpan"></span>&nbsp;/&nbsp;<span id="totalCountSpan"></span>&nbsp;&nbsp;<li id="previousPageLi"><a href="javascript:;">Prev</a></li>&nbsp;<li id="nextPageLi"><a href="javascript:;">Next</a></li></ul></div></div></div>');
 
-            var pNames = getProjectNames();
-            $.each(pNames, function (idx, val) {
+            var partAs = getDistinctPartA();
+            $.each(partAs, function (idx, val) {
                 $("#navbar ul").append("<li data-value=\"" + val + "\"><a href='javascript:;'><strong>" + val + "</strong></a></li>");
             });
-            if (pNames.length > 0) {
-                if (localStorage.pName != undefined && $.inArray(localStorage.pName, pNames) != -1)
-                    navBarLiClick(localStorage.pName);
+            if (partAs.length > 0) {
+                if (localStorage.partA != undefined && $.inArray(localStorage.partA, partAs) != -1)
+                    navBarLiClick(localStorage.partA);
                 else
-                    navBarLiClick(pNames[0]);
+                    navBarLiClick(partAs[0]);
             }
             else {
-                $("body").html('<div class="container"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12"><h3>暂无记录，请稍后刷新重试！</h3></div></div></div>');
+                $("body").html('<div class="container"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12"><h3>no data, pls wait and refresh this page :)</h3></div></div></div>');
             }
         }
         else {
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     $("body").on("click", "#nav ul li", function () {
-        navLiClick($(this).attr("data-pname"), $(this).attr("data-date"));
+        navLiClick($(this).attr("data-parta"), $(this).attr("data-partb"));
     });
 
     $("body").on("click", "#table tbody tr", function () {
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
     $("body").on("click", "#previousPageLi", function () {
         if (localStorage.pageIndex != 1) {
             localStorage.pageIndex = parseInt(localStorage.pageIndex) - 1;
-            initFileList(localStorage.pName, localStorage.logDate);
+            initFileList(localStorage.partA, localStorage.partB);
         }
     });
 
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var totalPageCount = localStorage.totalCount % localStorage.pageSize == 0 ? localStorage.totalCount / localStorage.pageSize : Math.ceil(localStorage.totalCount / localStorage.pageSize);
         if (localStorage.pageIndex != totalPageCount) {
             localStorage.pageIndex = parseInt(localStorage.pageIndex) + 1;
-            initFileList(localStorage.pName, localStorage.logDate);
+            initFileList(localStorage.partA, localStorage.partB);
         }
     });
 
@@ -129,15 +129,15 @@ document.addEventListener('DOMContentLoaded', function () {
         return cur_day + " " + hours + ":" + minutes;
     }
 
-    function getProjectNames() {
-        return JSLINQ(fileList).Distinct(function () { return this.Project; }).items;
+    function getDistinctPartA() {
+        return JSLINQ(fileList).Distinct(function () { return this.PartA; }).items;
     }
 
-    function getDistinctProjectLogDate(pName) {
-        return JSLINQ(fileList).Where(function () { return this.Project == pName; }).Distinct(function () { return this.LogDate; }).items;
+    function getDistinctPartB(partA) {
+        return JSLINQ(fileList).Where(function () { return this.PartA == partA; }).Distinct(function () { return this.PartB; }).items;
     }
 
-    function getProjectLogFiles(pName, logDate) {
+    function getFileListPage(partA, partB) {
         var totalPageCount = localStorage.totalCount % localStorage.pageSize == 0 ? localStorage.totalCount / localStorage.pageSize : Math.ceil(localStorage.totalCount / localStorage.pageSize);
 
         if (localStorage.pageIndex == 1) {
@@ -157,83 +157,83 @@ document.addEventListener('DOMContentLoaded', function () {
         $("#pageSizeSpan").text(localStorage.pageSize);
         $("#totalCountSpan").text(localStorage.totalCount);
 
-        if (logDate == 'all') {
-            return JSLINQ(fileList).Reverse().Where(function () { return this.Project == pName; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
+        if (partB == 'all') {
+            return JSLINQ(fileList).Reverse().Where(function () { return this.PartA == partA; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("PartB,FileTime,FileSize,FileName").items;
         }
         else {
-            return JSLINQ(fileList).Reverse().Where(function () { return this.Project == pName && this.LogDate == logDate; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
+            return JSLINQ(fileList).Reverse().Where(function () { return this.PartA == partA && this.PartB == partB; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("PartB,FileTime,FileSize,FileName").items;
         }
     }
 
-    function getProjectLogFilesCount(pName, logDate) {
-        if (logDate == 'all') {
-            return JSLINQ(fileList).Count(function () { return this.Project == pName; });
+    function getFileListTotalCount(partA, partB) {
+        if (partB == 'all') {
+            return JSLINQ(fileList).Count(function () { return this.PartA == partA; });
         }
         else {
-            return JSLINQ(fileList).Count(function () { return this.Project == pName && this.LogDate == logDate; });
+            return JSLINQ(fileList).Count(function () { return this.PartA == partA && this.PartB == partB; });
         }
     }
 
-    function navBarLiClick(liPName) {
-        $("#navbar ul li[data-value=\"" + liPName + "\"]").addClass("active").siblings().removeClass("active");
+    function navBarLiClick(partA) {
+        $("#navbar ul li[data-value=\"" + partA + "\"]").addClass("active").siblings().removeClass("active");
 
         $("#nav ul").empty();
-        $("#nav ul").append("<li data-pname=\"" + liPName + "\" data-date=\"all\"><a href='javascript:;'>all</a></li>");
+        $("#nav ul").append("<li data-parta=\"" + partA + "\" data-partb=\"all\"><a href='javascript:;'>all</a></li>");
 
-        var liDate = '';
-        var list = getDistinctProjectLogDate(liPName);
+        var partB = '';
+        var list = getDistinctPartB(partA);
         //list.sort();
         list.reverse();
         $.each(list, function (i, v) {
-            if (localStorage.logDate != undefined && localStorage.pName != undefined && localStorage.pName == liPName && localStorage.logDate == v) {
-                liDate = localStorage.logDate;
-                $("#nav ul").append("<li class='active' data-pname=\"" + liPName + "\" data-date=\"" + v + "\"><a href='javascript:;'>" + v + "</a></li>");
+            if (localStorage.partB != undefined && localStorage.partA != undefined && localStorage.partA == partA && localStorage.partB == v) {
+                partB = localStorage.partB;
+                $("#nav ul").append("<li class='active' data-parta=\"" + partA + "\" data-partb=\"" + v + "\"><a href='javascript:;'>" + v + "</a></li>");
             }
             else {
-                $("#nav ul").append("<li data-pname=\"" + liPName + "\" data-date=\"" + v + "\"><a href='javascript:;'>" + v + "</a></li>");
+                $("#nav ul").append("<li data-parta=\"" + partA + "\" data-partb=\"" + v + "\"><a href='javascript:;'>" + v + "</a></li>");
             }
         });
-        if (liDate == '') {
-            liDate = 'all';
+        if (partB == '') {
+            partB = 'all';
             $("#nav ul li:first").addClass("active");
         }
-        initFileList(liPName, liDate);
+        initFileList(partA, partB);
     }
 
-    function navLiClick(liPName, liDate) {
-        $("#nav ul li[data-date=\"" + liDate + "\"]").addClass("active").siblings().removeClass("active");
-        initFileList(liPName, liDate);
+    function navLiClick(partA, partB) {
+        $("#nav ul li[data-partb=\"" + partB + "\"]").addClass("active").siblings().removeClass("active");
+        initFileList(partA, partB);
     }
 
-    function initFileList(pName, logDate) {
-        if (localStorage.pName != pName || localStorage.logDate != logDate) {
+    function initFileList(partA, partB) {
+        if (localStorage.partA != partA || localStorage.partB != partB) {
             localStorage.pageIndex = 1;
             localStorage.pageSize = 10;
         }
 
-        if (localStorage.pName != pName) {
-            localStorage.pName = pName;
+        if (localStorage.partA != partA) {
+            localStorage.partA = partA;
         }
-        if (localStorage.logDate != logDate) {
-            localStorage.logDate = logDate;
+        if (localStorage.partB != partB) {
+            localStorage.partB = partB;
         }
 
-        var totalCount = getProjectLogFilesCount(pName, logDate);
+        var totalCount = getFileListTotalCount(partA, partB);
         if (localStorage.totalCount != totalCount) {
             localStorage.totalCount = totalCount;
         }
 
-        var fileList = getProjectLogFiles(pName, logDate);
+        var fileList = getFileListPage(partA, partB);
 
         $("#table").empty();
-        $("#table").append("<thead><tr><th>文件名</th><th>时间</th><th>大小</th><th>操作</th></tr></thead><tbody>");
+        // $("#table").append("<thead><tr><th>FileName</th><th>Time</th><th>FileSize</th><th>Operate</th></tr></thead><tbody>");
         if (fileList.length > 0) {
             $.each(fileList, function (i, v) {
-                $("#table").append("<tr><td>" + v.FileName + "</td><td>" + v.LogChangeTime + "</td><td>" + v.LogSize + "</td><td><a href='" + v.FileName + "' target='_blank'>查看</a></td></tr>");
+                $("#table").append("<tr><td>" + v.FileName + "</td><td>" + v.FileTime + "</td><td>" + v.FileSize + "</td><td><a href='" + v.FileName + "' target='_blank'>Link</a></td></tr>");
             });
         }
         else {
-            $("#table").append("<tr><td colspan='4'><center>暂无数据</center></td></tr>");
+            $("#table").append("<tr><td colspan='4'><center>no data</center></td></tr>");
         }
         $("#table").append("</tbody>");
     }
