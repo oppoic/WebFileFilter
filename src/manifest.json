@@ -1,6 +1,6 @@
 {
-  "name": "WebFileFilter",
-  "version": "1.2.0",
+  "name": "WebFileFilterPro",
+  "version": "1.0.0",
   "description": "fast sort your webpage files",
   "icons": {
     "16": "images/16.png",
@@ -9,7 +9,7 @@
   },
   "browser_action": {
     "default_icon": "images/16.png",
-    "default_title": "WebFileFilter"
+    "default_title": "WebFileFilterPro"
   },
   "web_accessible_resources": [
     "images/16.png"
