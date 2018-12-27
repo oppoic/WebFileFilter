@@ -24,7 +24,7 @@
 > 注：`run_at`设置为`document_start`表示在页面展示之前就注入，同时渲染页面的`content_scripts_list.js`所有代码都需要写在页面`DOMContentLoaded`监听事件里面，例：
 ```
 document.addEventListener('DOMContentLoaded', function () {
-    //your format page javascript...
+    //your javascript...
 });
 ```
 这样处理的好处是：打开不会看到原始页面刷一下过去才显示美化后的页面，直接就显示美化后的页面，用户基本没有感知。
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
 下载源码，打开Chrome浏览器 - 更多工具 - 扩展程序，打开“开发者模式” - 加载已解压的扩展程序 - 选择源码的src目录 - 确定
 > 优点：代码随时可改，刷新插件即生效；缺点：每次打开`chrome`都有安全提示，点忽略才可以启动插件
 ### 应用商店
-地址：~~已放弃~~
+地址：https://chrome.google.com/webstore/detail/webfilefilter/cdeolmmphppafidkkkcbfejegimfngmc
 
 ## 总结
 相比于`background`，本分支实现的`content_scripts`方式更干净，只往指定的页面注入代码。缺点也同样明显，就是不能动态配置需要注入代码的页面地址。如果你的地址不常变化，可以下载本分支代码，然后修改`matches`里的地址打包成`crx`文件使用。
