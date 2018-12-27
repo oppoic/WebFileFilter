@@ -1,8 +1,5 @@
 //console.log("filelist.js");
 
-//document.addEventListener('DOMContentLoaded', function () {
-//console.log('filelist.js DOMContentLoaded');
-
 var fileList = [];
 var preList = document.getElementsByTagName("pre");
 if (preList.length == 1) {
@@ -238,4 +235,3 @@ function initFileList(partA, partB) {
     }
     $("#table").append("</tbody>");
 }
-//});

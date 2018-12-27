@@ -45,7 +45,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                 }, _ => {
                     let e = chrome.runtime.lastError;
                     if (e !== undefined) {
-                        console.log(tabId, _, e);
+                        //console.log(tabId, _, e);
                     }
                     else {
                         chrome.tabs.insertCSS(tabId, { file: "css/bootstrap.min.css" });
