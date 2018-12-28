@@ -16,7 +16,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                 console.log("url matched");
 
                 chrome.tabs.executeScript(tabId, {
-                    code: 'document.body.childNodes.forEach(function(el,idx){if(el.tagName!=undefined){el.setAttribute("style","display:none");}});var div = document.createElement("div");div.className = "loader";div.innerHTML = "<span></span><span></span><span></span>";document.body.insertBefore(div, document.body.firstElementChild);', runAt: 'document_start'
+                    code: 'document.body.childNodes.forEach(function(el){if(el.tagName!=undefined){el.setAttribute("style","display:none");}});var div = document.createElement("div");div.className = "loader";div.innerHTML = "<span></span><span></span><span></span>";document.body.insertBefore(div, document.body.firstElementChild);', runAt: 'document_start'
                 }, _ => {
                     let e = chrome.runtime.lastError;
                     if (e !== undefined) {
