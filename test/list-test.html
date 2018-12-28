@@ -40,9 +40,8 @@
             <div class="col-sm-10 col-md-10 col-lg-10">
                 <table id="table" class="table table-bordered"></table>
                 <ul class="pager">
-                    <span id="pageIndexSpan" title="当前页码"></span>&nbsp;/&nbsp;<span id="pageSizeSpan" title="每页条数"></span>&nbsp;/&nbsp;<span
-                        id="totalCountSpan" title="总记录数"></span>&nbsp;&nbsp;<li id="previousPageLi"><a href="javascript:;">上一页</a></li>&nbsp;<li
-                        id="nextPageLi"><a href="javascript:;">下一页</a></li>
+                    <span id="pageIndexSpan"></span>&nbsp;/&nbsp;<span id="pageSizeSpan"></span>&nbsp;/&nbsp;<span id="totalCountSpan"></span>&nbsp;&nbsp;<li
+                        id="previousPageLi"><a href="javascript:;">Prev</a></li>&nbsp;<li id="nextPageLi"><a href="javascript:;">Next</a></li>
                 </ul>
             </div>
         </div>
@@ -53,27 +52,27 @@
     <script type="text/javascript">
 
         var fileList = [];
-        fileList.push({ Project: "cmapi", LogDate: "20181112", LogHour: "15.txt", LogChangeTime: "2018-11-12 15:47", LogSize: "10K", FileName: "cmapi-20181112-15.txt" });
-        fileList.push({ Project: "portal", LogDate: "20181031", LogHour: "16.txt", LogChangeTime: "2018-10-31 16:27", LogSize: "2721", FileName: "portal-20181031-16.txt" });
-        fileList.push({ Project: "portal", LogDate: "20181203", LogHour: "16.txt", LogChangeTime: "2018-12-03 16:47", LogSize: "29K", FileName: "portal-20181203-16.txt" });
-        fileList.push({ Project: "portal", LogDate: "20181204", LogHour: "12.txt", LogChangeTime: "2018-12-04 12:26", LogSize: "11", FileName: "portal-20181204-12.txt" });
-        fileList.push({ Project: "portal", LogDate: "20181205", LogHour: "11.txt", LogChangeTime: "2018-12-05 11:26", LogSize: "3611", FileName: "portal-20181205-11.txt" });
-        fileList.push({ Project: "vfs", LogDate: "20181101", LogHour: "13.txt", LogChangeTime: "2018-11-01 13:54", LogSize: "1", FileName: "vfs-20181101-13.txt" });
-        fileList.push({ Project: "vfs", LogDate: "20181207", LogHour: "18.txt", LogChangeTime: "2018-12-07 18:07", LogSize: "5872", FileName: "vfs-20181207-18.txt" });
-        fileList.push({ Project: "vfs", LogDate: "20181206", LogHour: "11.txt", LogChangeTime: "2018-12-06 18:07", LogSize: "123", FileName: "vfs-20181206-11.txt" });
+        fileList.push({ PartA: "cmapi", PartB: "20181112", FileTime: "2018-11-12 15:47", FileSize: "10K", FileName: "cmapi-20181112-15.txt" });
+        fileList.push({ PartA: "portal", PartB: "20181031", FileTime: "2018-10-31 16:27", FileSize: "2721", FileName: "portal-20181031-16.txt" });
+        fileList.push({ PartA: "portal", PartB: "20181203", FileTime: "2018-12-03 16:47", FileSize: "29K", FileName: "portal-20181203-16.txt" });
+        fileList.push({ PartA: "portal", PartB: "20181204", FileTime: "2018-12-04 12:26", FileSize: "11", FileName: "portal-20181204-12.txt" });
+        fileList.push({ PartA: "portal", PartB: "20181205", FileTime: "2018-12-05 11:26", FileSize: "3611", FileName: "portal-20181205-11.txt" });
+        fileList.push({ PartA: "vfs", PartB: "20181101", FileTime: "2018-11-01 13:54", FileSize: "1", FileName: "vfs-20181101-13.txt" });
+        fileList.push({ PartA: "vfs", PartB: "20181207", FileTime: "2018-12-07 18:07", FileSize: "5872", FileName: "vfs-20181207-18.txt" });
+        fileList.push({ PartA: "vfs", PartB: "20181206", FileTime: "2018-12-06 18:07", FileSize: "123", FileName: "vfs-20181206-11.txt" });
 
-        var pNames = getProjectNames();
-        $.each(pNames, function (idx, val) {
+        var partAs = getDistinctPartA();
+        $.each(partAs, function (idx, val) {
             $("#navbar ul").append("<li data-value=\"" + val + "\"><a href='javascript:;'><strong>" + val + "</strong></a></li>");
         });
-        if (pNames.length > 0) {
-            if (localStorage.pName != undefined && $.inArray(localStorage.pName, pNames) != -1)
-                navBarLiClick(localStorage.pName);
+        if (partAs.length > 0) {
+            if (localStorage.partA != undefined && $.inArray(localStorage.partA, partAs) != -1)
+                navBarLiClick(localStorage.partA);
             else
-                navBarLiClick(pNames[0]);
+                navBarLiClick(partAs[0]);
         }
         else {
-            $("body").html('<div class="container"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12"><h3>暂无记录，请稍后刷新重试！</h3></div></div></div>');
+            $("body").html('<div class="container"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12"><h3>no data, pls wait and refresh this page :)</h3></div></div></div>');
         }
 
         $("body").on("click", "#navbar ul li", function () {
@@ -81,7 +80,7 @@
         });
 
         $("body").on("click", "#nav ul li", function () {
-            navLiClick($(this).attr("data-pname"), $(this).attr("data-date"));
+            navLiClick($(this).attr("data-parta"), $(this).attr("data-partb"));
         });
 
         $("body").on("click", "#table tbody tr", function () {
@@ -91,7 +90,7 @@
         $("body").on("click", "#previousPageLi", function () {
             if (localStorage.pageIndex != 1) {
                 localStorage.pageIndex = parseInt(localStorage.pageIndex) - 1;
-                initFileList(localStorage.pName, localStorage.logDate);
+                initFileList(localStorage.partA, localStorage.partB);
             }
         });
 
@@ -99,7 +98,7 @@
             var totalPageCount = localStorage.totalCount % localStorage.pageSize == 0 ? localStorage.totalCount / localStorage.pageSize : Math.ceil(localStorage.totalCount / localStorage.pageSize);
             if (localStorage.pageIndex != totalPageCount) {
                 localStorage.pageIndex = parseInt(localStorage.pageIndex) + 1;
-                initFileList(localStorage.pName, localStorage.logDate);
+                initFileList(localStorage.partA, localStorage.partB);
             }
         });
 
@@ -125,15 +124,15 @@
             return cur_day + " " + hours + ":" + minutes;
         }
 
-        function getProjectNames() {
-            return JSLINQ(fileList).Distinct(function () { return this.Project; }).items;
+        function getDistinctPartA() {
+            return JSLINQ(fileList).Distinct(function () { return this.PartA; }).items;
         }
 
-        function getDistinctProjectLogDate(pName) {
-            return JSLINQ(fileList).Where(function () { return this.Project == pName; }).Distinct(function () { return this.LogDate; }).items;
+        function getDistinctPartB(partA) {
+            return JSLINQ(fileList).Where(function () { return this.PartA == partA; }).Distinct(function () { return this.PartB; }).items;
         }
 
-        function getProjectLogFiles(pName, logDate) {
+        function getFileListPage(partA, partB) {
             var totalPageCount = localStorage.totalCount % localStorage.pageSize == 0 ? localStorage.totalCount / localStorage.pageSize : Math.ceil(localStorage.totalCount / localStorage.pageSize);
 
             if (localStorage.pageIndex == 1) {
@@ -153,83 +152,83 @@
             $("#pageSizeSpan").text(localStorage.pageSize);
             $("#totalCountSpan").text(localStorage.totalCount);
 
-            if (logDate == 'all') {
-                return JSLINQ(fileList).Reverse().Where(function () { return this.Project == pName; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
+            if (partB == 'all') {
+                return JSLINQ(fileList).Reverse().Where(function () { return this.PartA == partA; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("PartB,FileTime,FileSize,FileName").items;
             }
             else {
-                return JSLINQ(fileList).Reverse().Where(function () { return this.Project == pName && this.LogDate == logDate; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("LogDate,LogHour,LogChangeTime,LogSize,FileName").items;
+                return JSLINQ(fileList).Reverse().Where(function () { return this.PartA == partA && this.PartB == partB; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("PartB,FileTime,FileSize,FileName").items;
             }
         }
 
-        function getProjectLogFilesCount(pName, logDate) {
-            if (logDate == 'all') {
-                return JSLINQ(fileList).Count(function () { return this.Project == pName; });
+        function getFileListTotalCount(partA, partB) {
+            if (partB == 'all') {
+                return JSLINQ(fileList).Count(function () { return this.PartA == partA; });
             }
             else {
-                return JSLINQ(fileList).Count(function () { return this.Project == pName && this.LogDate == logDate; });
+                return JSLINQ(fileList).Count(function () { return this.PartA == partA && this.PartB == partB; });
             }
         }
 
-        function navBarLiClick(liPName) {
-            $("#navbar ul li[data-value=\"" + liPName + "\"]").addClass("active").siblings().removeClass("active");
+        function navBarLiClick(partA) {
+            $("#navbar ul li[data-value=\"" + partA + "\"]").addClass("active").siblings().removeClass("active");
 
             $("#nav ul").empty();
-            $("#nav ul").append("<li data-pname=\"" + liPName + "\" data-date=\"all\"><a href='javascript:;'>all</a></li>");
+            $("#nav ul").append("<li data-parta=\"" + partA + "\" data-partb=\"all\"><a href='javascript:;'>all</a></li>");
 
-            var liDate = '';
-            var list = getDistinctProjectLogDate(liPName);
+            var partB = '';
+            var list = getDistinctPartB(partA);
             //list.sort();
             list.reverse();
             $.each(list, function (i, v) {
-                if (localStorage.logDate != undefined && localStorage.pName != undefined && localStorage.pName == liPName && localStorage.logDate == v) {
-                    liDate = localStorage.logDate;
-                    $("#nav ul").append("<li class='active' data-pname=\"" + liPName + "\" data-date=\"" + v + "\"><a href='javascript:;'>" + v + "</a></li>");
+                if (localStorage.partB != undefined && localStorage.partA != undefined && localStorage.partA == partA && localStorage.partB == v) {
+                    partB = localStorage.partB;
+                    $("#nav ul").append("<li class='active' data-parta=\"" + partA + "\" data-partb=\"" + v + "\"><a href='javascript:;'>" + v + "</a></li>");
                 }
                 else {
-                    $("#nav ul").append("<li data-pname=\"" + liPName + "\" data-date=\"" + v + "\"><a href='javascript:;'>" + v + "</a></li>");
+                    $("#nav ul").append("<li data-parta=\"" + partA + "\" data-partb=\"" + v + "\"><a href='javascript:;'>" + v + "</a></li>");
                 }
             });
-            if (liDate == '') {
-                liDate = 'all';
+            if (partB == '') {
+                partB = 'all';
                 $("#nav ul li:first").addClass("active");
             }
-            initFileList(liPName, liDate);
+            initFileList(partA, partB);
         }
 
-        function navLiClick(liPName, liDate) {
-            $("#nav ul li[data-date=\"" + liDate + "\"]").addClass("active").siblings().removeClass("active");
-            initFileList(liPName, liDate);
+        function navLiClick(partA, partB) {
+            $("#nav ul li[data-partb=\"" + partB + "\"]").addClass("active").siblings().removeClass("active");
+            initFileList(partA, partB);
         }
 
-        function initFileList(pName, logDate) {
-            if (localStorage.pName != pName || localStorage.logDate != logDate) {
+        function initFileList(partA, partB) {
+            if (localStorage.partA != partA || localStorage.partB != partB) {
                 localStorage.pageIndex = 1;
-                localStorage.pageSize = 12;
+                localStorage.pageSize = 10;
             }
 
-            if (localStorage.pName != pName) {
-                localStorage.pName = pName;
+            if (localStorage.partA != partA) {
+                localStorage.partA = partA;
             }
-            if (localStorage.logDate != logDate) {
-                localStorage.logDate = logDate;
+            if (localStorage.partB != partB) {
+                localStorage.partB = partB;
             }
 
-            var totalCount = getProjectLogFilesCount(pName, logDate);
+            var totalCount = getFileListTotalCount(partA, partB);
             if (localStorage.totalCount != totalCount) {
                 localStorage.totalCount = totalCount;
             }
 
-            var fileList = getProjectLogFiles(pName, logDate);
+            var fileList = getFileListPage(partA, partB);
 
             $("#table").empty();
-            $("#table").append("<thead><tr><th>文件名</th><th>时间</th><th>大小</th><th>操作</th></tr></thead><tbody>");
+            // $("#table").append("<thead><tr><th>FileName</th><th>Time</th><th>FileSize</th><th>Operate</th></tr></thead><tbody>");
             if (fileList.length > 0) {
                 $.each(fileList, function (i, v) {
-                    $("#table").append("<tr><td>" + v.FileName + "</td><td>" + v.LogChangeTime + "</td><td>" + v.LogSize + "</td><td><a href='" + v.FileName + "' target='_blank'>查看</a></td></tr>");
+                    $("#table").append("<tr><td>" + v.FileName + "</td><td>" + v.FileTime + "</td><td>" + v.FileSize + "</td><td><a href='" + v.FileName + "' target='_blank'>Link</a></td></tr>");
                 });
             }
             else {
-                $("#table").append("<tr><td colspan='4'><center>暂无数据</center></td></tr>");
+                $("#table").append("<tr><td colspan='4'><center>no data</center></td></tr>");
             }
             $("#table").append("</tbody>");
         }
