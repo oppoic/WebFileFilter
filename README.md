@@ -38,7 +38,7 @@
 下载源码，打开Chrome浏览器 - 更多工具 - 扩展程序，打开“开发者模式” - 加载已解压的扩展程序 - 选择源码的src目录 - 确定
 > 优点：代码随时可改，刷新插件即生效；缺点：每次打开`chrome`都有安全提示，点忽略才可以启动插件
 ### 应用商店
-地址：
+地址：https://chrome.google.com/webstore/detail/webfilefilterpro/jaalaojoelhafjioieflinfgeklglegp
 
 ## 总结
 `background`方式，可以动态修改需要注入`js`、`css`的URL地址，浏览器访问的每个页面都判断是否是用户设置的URL，故效率偏低；`content_scripts`方式比较干净，只往指定的URL地址注入代码，其他一律不注入，效率比较高。
