@@ -156,10 +156,10 @@ function getFileListPage(partA, partB) {
     $("#totalCountSpan").text(localStorage.totalCount);
 
     if (partB == 'all') {
-        return JSLINQ(fileList).Reverse().Where(function () { return this.PartA == partA; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("PartB,FileTime,FileSize,FileName").items;
+        return JSLINQ(fileList)/*.Reverse()*/.Where(function () { return this.PartA == partA; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("PartB,FileTime,FileSize,FileName").items;
     }
     else {
-        return JSLINQ(fileList).Reverse().Where(function () { return this.PartA == partA && this.PartB == partB; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("PartB,FileTime,FileSize,FileName").items;
+        return JSLINQ(fileList)/*.Reverse()*/.Where(function () { return this.PartA == partA && this.PartB == partB; }).Skip(parseInt(localStorage.pageSize) * (parseInt(localStorage.pageIndex) - 1)).Take(parseInt(localStorage.pageSize)).Select("PartB,FileTime,FileSize,FileName").items;
     }
 }
 
@@ -181,7 +181,7 @@ function navBarLiClick(partA) {
     var partB = '';
     var list = getDistinctPartB(partA);
     //list.sort();
-    list.reverse();
+    //list.reverse();
     $.each(list, function (i, v) {
         if (localStorage.partB != undefined && localStorage.partA != undefined && localStorage.partA == partA && localStorage.partB == v) {
             partB = localStorage.partB;
